@@ -1,0 +1,24 @@
+services:
+  cloudflare-tunnel:
+      image: cloudflare/cloudflared:latest
+      container_name: cloudflare-tunnel
+      restart: unless-stopped
+      command: tunnel --no-autoupdate run 
+      labels:
+        - "traefik.enable=false"
+      environment:
+        - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - "--api.insecure=true"          # Clouflare tunnel so no problem
+      - "--providers.docker=true"      
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.forwardedheaders.insecure=true"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    depends_on:
+      - cloudflare-tunnel
+

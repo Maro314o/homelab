@@ -1,0 +1,10 @@
+include:
+  - network.yml
+  - services.yml
+  - management.yml
+
+volumes:
+  gotify_data:
+  huginn_data:
+  portainer_data:
+

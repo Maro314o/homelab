@@ -1,0 +1,16 @@
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:lts
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+    labels:
+      - "traefik.http.routers.portainer.rule=Host(`portainer.${MY_DOMAIN}`)" 
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+    depends_on:
+      - traefik
+
+
