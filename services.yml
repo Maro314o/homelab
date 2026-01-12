@@ -7,6 +7,9 @@ services:
       - "traefik.http.routers.searx.rule=Host(`searx.${MY_DOMAIN}`)" 
     depends_on:
       - traefik
+    networks:
+      - cloudflare_tunnel
+
   gotify:
     image: gotify/server
     container_name: gotify
@@ -20,20 +23,6 @@ services:
       - "traefik.http.routers.gotify.rule=Host(`gotify.${MY_DOMAIN}`)" 
     depends_on:
       - traefik
-  huginn:
-    image: ghcr.io/huginn/huginn
-    container_name: huginn
-    restart: unless-stopped
-    environment:
-      - TZ=Europe/Rome
-      - ALLOW_SIGNUP=false
-    volumes:
-      - huginn_data:/var/lib/huginn
-    labels:
-      - "traefik.http.routers.huginn.rule=Host(`huginn.${MY_DOMAIN}`)" 
-    depends_on:
-      - traefik
-
-
-
+    networks:
+      - cloudflare_tunnel
 

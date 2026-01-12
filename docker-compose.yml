@@ -2,9 +2,14 @@ include:
   - network.yml
   - services.yml
   - management.yml
+  - automation.yml
 
 volumes:
   gotify_data:
   huginn_data:
-  portainer_data:
+  arcane_data:
+  homeassistant_data:
 
+
+networks:
+  cloudflare_tunnel:

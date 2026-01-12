@@ -1,16 +1,39 @@
 services:
-  portainer:
-    container_name: portainer
-    image: portainer/portainer-ce:lts
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
 
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    volumes:
+      - ./configs/home-assistant/:/config
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Europe/Rome
+    restart: unless-stopped
     labels:
-      - "traefik.http.routers.portainer.rule=Host(`portainer.${MY_DOMAIN}`)" 
-      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      - "traefik.http.routers.homeassistant.rule=Host(`home-assistant.${MY_DOMAIN}`)" 
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
     depends_on:
       - traefik
+    networks:
+      - cloudflare_tunnel
+
+  arcane:
+    image: ghcr.io/ofkm/arcane:latest
+    container_name: arcane
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+      - arcane_data:/app/data                   
+      - /home/massimiliano/dock-com/:/app/data/projects/dock-com
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+    restart: unless-stopped
+    labels:
+      - "traefik.http.routers.arcane.rule=Host(`arcane.${MY_DOMAIN}`)" 
+    depends_on:
+      - traefik
+    networks:
+      - cloudflare_tunnel
 
 

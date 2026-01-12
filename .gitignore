@@ -1,1 +1,3 @@
 .env
+configs/home-assistant/*
+!configs/home-assistant/configuration.yaml

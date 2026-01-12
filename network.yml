@@ -8,6 +8,9 @@ services:
         - "traefik.enable=false"
       environment:
         - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+      networks:
+        - cloudflare_tunnel
+
   traefik:
     image: traefik:latest
     container_name: traefik
@@ -17,8 +20,12 @@ services:
       - "--providers.docker=true"      
       - "--entrypoints.web.address=:80"
       - "--entrypoints.web.forwardedheaders.insecure=true"
+    ports:
+      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     depends_on:
       - cloudflare-tunnel
 
+    networks:
+      - cloudflare_tunnel
