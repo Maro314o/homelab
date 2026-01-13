@@ -1,4 +1,4 @@
-.PHONY: run stop update_db 
+.PHONY: run stop
 
 run:  
 	docker-compose up -d  --remove-orphans
