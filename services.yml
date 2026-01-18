@@ -18,11 +18,64 @@ services:
       - GOTIFY_DEFAULTUSER_NAME=${GOTIFY_DEFAULTUSER_NAME}
       - GOTIFY_DEFAULTUSER_PASS=${GOTIFY_DEFAULTUSER_PASS}
     volumes:
-      - gotify_data:/app/data
+      - ./data/gotify:/app/data
     labels:
       - "traefik.http.routers.gotify.rule=Host(`gotify.${MY_DOMAIN}`)" 
     depends_on:
       - traefik
     networks:
       - cloudflare_tunnel
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:13
+    container_name: forgejo
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - FORGEJO__server__ROOT_URL=https://forgejo.${MY_DOMAIN}
+    restart: always
+    volumes:
+      - ./data/forgejo:/data
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - '222:22'
+    labels:
+      - "traefik.http.routers.forgejo.rule=Host(`forgejo.${MY_DOMAIN}`)" 
+      - "traefik.http.services.forgejo.loadbalancer.server.port=3000"
+    depends_on:
+      - traefik
+    networks:
+      - cloudflare_tunnel
 
+
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    restart: unless-stopped
+    volumes:
+      - ./data/navidrome:/data
+      - /home/massimiliano/shared/music:/music:ro
+    environment:
+      - ND_ENABLEINSIGHTSCOLLECTOR=false
+    labels:
+      - "traefik.http.routers.navidrome.rule=Host(`navidrome.${MY_DOMAIN}`)" 
+    depends_on:
+      - traefik
+    networks:
+      - cloudflare_tunnel
+  nextexplorer:
+    image: nxzai/explorer:latest
+    container_name: nextexplorer
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PUBLIC_URL=https://nextexplorer.${MY_DOMAIN}
+    volumes:
+      - ./configs/nextexplorer:/config
+      - ./cache/nextexplorer:/cache
+      - ~/shared/shared_online:/mnt
+    labels:
+      - "traefik.http.routers.nextexplorer.rule=Host(`nextexplorer.${MY_DOMAIN}`)" 
+    depends_on:
+      - traefik
+    networks:
+      - cloudflare_tunnel

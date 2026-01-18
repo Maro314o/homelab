@@ -29,3 +29,22 @@ services:
 
     networks:
       - cloudflare_tunnel
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Rome
+      - FTLCONF_webserver_api_password=${PIHOLE_PASSWORD}
+      - FTLCONF_dns_listeningMode=local
+      - FTLCONF_webserver_port=83o,8443so,[::]:83o,[::]:8443so
+      - DNSMASQ_LISTENING=all
+      - ServerIP=${SERVER_IP}
+    volumes:
+      - ./data/pihole/etc:/etc/pihole
+      - ./data/pihole/pihole_dnsmasq:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN
+      - SYS_TIME
+      - SYS_NICE
+    network_mode: host

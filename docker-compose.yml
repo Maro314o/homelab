@@ -4,12 +4,8 @@ include:
   - management.yml
   - automation.yml
 
-volumes:
-  gotify_data:
-  huginn_data:
-  arcane_data:
-  homeassistant_data:
-
 
 networks:
   cloudflare_tunnel:
+volumes:
+  huginn_data:

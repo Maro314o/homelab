@@ -22,8 +22,8 @@ services:
     container_name: arcane
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock 
-      - arcane_data:/app/data                   
-      - /home/massimiliano/dock-com/:/app/data/projects/dock-com
+      - ./data/arcane:/app/data                   
+      - /home/massimiliano/docker-stacks/:/app/data/projects/
     environment:
       - PUID=1000
       - PGID=1000
