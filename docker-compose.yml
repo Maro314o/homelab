@@ -4,7 +4,6 @@ include:
   - management.yml
   - automation.yml
 
-
 networks:
   cloudflare_tunnel:
 volumes:
