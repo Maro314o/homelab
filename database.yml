@@ -1,0 +1,19 @@
+services:
+  bookstack_db:
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: bookstack_db
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=${BOOKSTACK_DB_ROOT_PASSWORD}
+      - TZ=Europe/Rome
+      - MYSQL_DATABASE=bookstack_db
+      - MYSQL_USER=${BOOKSTACK_DB_USER}
+      - MYSQL_PASSWORD=${BOOKSTACK_DB_PASSWORD}
+    volumes:
+      - ./data/bookstack_db_data:/config
+    restart: unless-stopped
+    networks:
+      - cloudflare_tunnel
+
+

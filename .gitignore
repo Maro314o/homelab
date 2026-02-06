@@ -4,3 +4,5 @@ cache/
 configs/
 !configs/home-assistant
 !configs/home-assistant/configuration.yaml
+!data/nginx
+!data/nginx/**

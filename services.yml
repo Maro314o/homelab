@@ -92,3 +92,26 @@ services:
       - traefik
     networks:
       - cloudflare_tunnel
+  bookstack: 
+    image: lscr.io/linuxserver/bookstack:latest
+    container_name: bookstack 
+    environment: 
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      - APP_KEY=${BOOKSTACK_APP_KEY}
+      - APP_URL=https://bookstack.${MY_DOMAIN}
+      - DB_HOST=bookstack_db
+      - DB_PASSWORD=${BOOKSTACK_DB_PASSWORD}
+      - DB_USERNAME=${BOOKSTACK_DB_USER}
+      - DB_DATABASE=bookstack_db
+    volumes: 
+        - ./data/bookstack:/config 
+    restart: unless-stopped
+    labels:
+      - "traefik.http.routers.bookstack.rule=Host(`bookstack.${MY_DOMAIN}`)"
+    depends_on:
+      - bookstack_db
+      - traefik
+    networks:
+      - cloudflare_tunnel
