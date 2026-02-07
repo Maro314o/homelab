@@ -9,7 +9,3 @@ configs/nginx/*
 !configs/nginx/nginx.conf
 !configs/home-assistant/configuration.yaml
 
-
-data/*
-!data/nginx
-!data/nginx/*
