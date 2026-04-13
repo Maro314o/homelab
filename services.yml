@@ -3,6 +3,8 @@ services:
     image: searxng/searxng:latest
     container_name: searxng
     restart: unless-stopped
+    volumes:
+      - ./configs/searxng:/etc/searxng
     labels:
       - "traefik.http.routers.searx.rule=Host(`searx.${MY_DOMAIN}`)" 
     depends_on:
@@ -88,6 +90,7 @@ services:
     labels:
       - "traefik.http.routers.nginx.rule=Host(`${MY_DOMAIN}`) || Host(`links.${MY_DOMAIN}`)" 
       - "traefik.http.services.nginx.loadbalancer.server.port=80"
+    restart: unless-stopped
     depends_on:
       - traefik
     networks:
@@ -112,6 +115,18 @@ services:
       - "traefik.http.routers.bookstack.rule=Host(`bookstack.${MY_DOMAIN}`)"
     depends_on:
       - bookstack_db
+      - traefik
+    networks:
+      - cloudflare_tunnel
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main-slim
+    labels:
+      - "traefik.http.routers.openwebui.rule=Host(`openwebui.${MY_DOMAIN}`)"
+    volumes:
+      - ./data/open-webui:/app/backend/data
+    extra_hosts:
+      - "ollama.local:192.168.1.218"
+    depends_on:
       - traefik
     networks:
       - cloudflare_tunnel
