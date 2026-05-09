@@ -3,6 +3,8 @@ services:
     image: searxng/searxng:latest
     container_name: searxng
     restart: unless-stopped
+    environment:
+      - BASE_URL=https://searx.${MY_DOMAIN}
     volumes:
       - ./configs/searxng:/etc/searxng
     labels:
