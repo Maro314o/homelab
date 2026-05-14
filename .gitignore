@@ -1,6 +1,8 @@
 .env
 cache/
-data/
+data/*
+!data/nginx/
+!data/nginx/*
 configs/*
 !configs/home-assistant
 !configs/nginx
