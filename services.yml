@@ -120,15 +120,16 @@ services:
       - traefik
     networks:
       - cloudflare_tunnel
-  openwebui:
-    image: ghcr.io/open-webui/open-webui:main-slim
-    labels:
-      - "traefik.http.routers.openwebui.rule=Host(`openwebui.${MY_DOMAIN}`)"
-    volumes:
-      - ./data/open-webui:/app/backend/data
-    extra_hosts:
-      - "ollama.local:192.168.1.218"
-    depends_on:
-      - traefik
-    networks:
-      - cloudflare_tunnel
+
+  #openwebui:
+    #image: ghcr.io/open-webui/open-webui:main-slim
+    #labels:
+      #- "traefik.http.routers.openwebui.rule=Host(`openwebui.${MY_DOMAIN}`)"
+    #volumes:
+      #- ./data/open-webui:/app/backend/data
+    #extra_hosts:
+      #- "ollama.local:192.168.1.218"
+    #depends_on:
+      #- traefik
+    #networks:
+      #- cloudflare_tunnel
