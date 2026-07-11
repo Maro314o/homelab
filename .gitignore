@@ -1,4 +1,5 @@
 .env
+update.log
 cache/
 data/*
 !data/nginx/
@@ -11,4 +12,6 @@ configs/home-assistant/*
 configs/nginx/*
 !configs/nginx/nginx.conf
 !configs/home-assistant/configuration.yaml
+
+
 
