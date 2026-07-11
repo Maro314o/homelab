@@ -28,6 +28,7 @@ services:
       - PUID=1000
       - PGID=1000
       - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - JWT_SECRET=${JWT_ARCANE_TOKEN}
     restart: unless-stopped
     labels:
       - "traefik.http.routers.arcane.rule=Host(`arcane.${MY_DOMAIN}`)" 

@@ -3,6 +3,7 @@
 unsafe-update:
 	docker compose pull 
 	docker compose up -d --wait --remove-orphans
+	docker image prune -f --filter "until=24h"
 update:
 	nohup setsid $(MAKE) unsafe-update > update.log 2>&1 < /dev/null & echo "Started update, PID $$!, see update.log"
 run:  
