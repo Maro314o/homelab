@@ -133,8 +133,7 @@ $wgLocaltimezone = "UTC";
 ## to make your wiki go slightly faster. The directory should not
 ## be publicly accessible from the web.
 #$wgCacheDirectory = "$IP/cache";
-
-$wgSecretKey = "85765ece3520826f0d5ba5579edab5a430b83d040d197caa095cad9ca034a2d0";
+$wgSecretKey = getenv('MW_SECRET_KEY');
 
 # Changing this will log out all existing sessions.
 $wgAuthenticationTokenVersion = "1";
