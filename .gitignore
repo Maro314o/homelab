@@ -7,11 +7,16 @@ data/*
 configs/*
 !configs/home-assistant
 !configs/nginx
+!data/mediawiki/
+!data/mediawiki/*
+data/mediawiki/extensions/*
 
 configs/home-assistant/*
 configs/nginx/*
 !configs/nginx/nginx.conf
 !configs/home-assistant/configuration.yaml
+!configs/mediawiki
+!configs/mediawiki/LocalSettings.php
 
 
 

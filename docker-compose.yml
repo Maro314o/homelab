@@ -6,6 +6,10 @@ include:
   - database.yml
 
 networks:
-  cloudflare_tunnel:
+   cloudflare_tunnel:
+
 volumes:
-  huginn_data:
+   huginn_data:
+   nextcloud_data:
+   wiki_images:
+   wiki_data:
