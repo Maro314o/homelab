@@ -1,0 +1,49 @@
+# Override specifico per Podman rootless.
+# Non viene caricato automaticamente da Docker Compose: va passato con -f.
+services:
+  traefik:
+    volumes:
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock:ro
+
+  arcane:
+    volumes:
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock
+
+  # Le immagini LinuxServer partono come root e poi passano a PUID/PGID.
+  # keep-id mappa l'utente host 1000 sull'UID 1000 del container, così i dati
+  # restano di proprietà di massimiliano e non di un subuid.
+  bookstack:
+    userns_mode: keep-id
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: "0"
+
+  bookstack_db:
+    userns_mode: keep-id
+
+  # Forgejo ha bisogno di partire come root (s6); useremo lo userns privato
+  # predefinito. L'entrypoint adegua poi i permessi a USER_UID=1000.
+  forgejo:
+    environment:
+      FORGEJO__server__SSH_PORT: "2222"
+    # La 222 host è privilegiata e il kernel parte da 1024.
+    # 2222 mantiene il servizio raggiungibile senza sudo.
+    ports: !override
+      - "2222:22"
+
+  # SearXNG gira come UID 977; keep-id mappa host 1000 -> container 977.
+  searxng:
+    userns_mode: "keep-id:uid=977,gid=977"
+
+  # Huginn gira come UID 1001, GID 0.
+  huginn:
+    userns_mode: "keep-id:uid=1001,gid=0"
+
+  nextcloud:
+    environment:
+      TRUSTED_PROXIES: 10.89.10.0/24
+
+networks:
+  cloudflare_tunnel:
+    ipam:
+      config:
+        - subnet: 10.89.10.0/24

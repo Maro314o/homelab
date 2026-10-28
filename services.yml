@@ -103,6 +103,9 @@ services:
   mediawiki:
     image: mediawiki:1.46.0 
     container_name: mediawiki
+    environment:
+      MW_SECRET_KEY: ${MW_SECRET_KEY:?MW_SECRET_KEY is required}
+      MW_UPGRADE_KEY: ${MW_UPGRADE_KEY:?MW_UPGRADE_KEY is required}
     restart: unless-stopped
     volumes:
       - wiki_images:/var/www/html/images

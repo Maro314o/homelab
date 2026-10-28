@@ -11,26 +11,25 @@ services:
       extra_hosts:
         - "host.docker.internal:host-gateway"
       networks:
-        - cloudflare_tunnel
+        cloudflare_tunnel:
+          ipv4_address: 10.89.10.201
 
   traefik:
     image: traefik:latest
     container_name: traefik
     restart: unless-stopped
     command:
-      - "--api.insecure=true"          # Clouflare tunnel so no problem
       - "--providers.docker=true"      
       - "--entrypoints.web.address=:80"
-      - "--entrypoints.web.forwardedheaders.insecure=true"
-    ports:
-      - "8080:8080"
+      - "--entrypoints.web.forwardedheaders.trustedips=10.89.10.201/32"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     depends_on:
       - cloudflare-tunnel
 
     networks:
-      - cloudflare_tunnel
+      cloudflare_tunnel:
+        ipv4_address: 10.89.10.200
   #pihole:
     #container_name: pihole
     #image: pihole/pihole:latest

@@ -7,6 +7,9 @@ include:
 
 networks:
    cloudflare_tunnel:
+   shared:
+      external: true
+      name: local-shared
 
 volumes:
    huginn_data:
